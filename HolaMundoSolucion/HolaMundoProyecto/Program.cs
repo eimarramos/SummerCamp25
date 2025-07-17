@@ -25,5 +25,6 @@
         Console.WriteLine(@"       [[] [[]");
         Console.WriteLine(@"       [[] [[]");
 
+        var nombre = Console.ReadLine();
     }
 }
