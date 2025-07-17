@@ -1,4 +1,6 @@
-﻿internal class Program
+﻿using System;
+
+internal class Program
 {
     private static void Main(string[] args)
     {
@@ -28,30 +30,7 @@
 
             if (num >= 1 && num <= 7)
             {
-                switch (num)
-                {
-                    case 1:
-                        Console.WriteLine("Lunes");
-                        break;
-                    case 2:
-                        Console.WriteLine("Martes");
-                        break;
-                    case 3:
-                        Console.WriteLine("Miércoles");
-                        break;
-                    case 4:
-                        Console.WriteLine("Jueves");
-                        break;
-                    case 5:
-                        Console.WriteLine("Viernes");
-                        break;
-                    case 6:
-                        Console.WriteLine("Sábado");
-                        break;
-                    case 7:
-                        Console.WriteLine("Domingo");
-                        break;
-                }
+                MostrarDiaConSwitch(num);
             }
             else
             {
@@ -100,6 +79,34 @@
 
          Console.WriteLine("¡Hasta luego!");
          */
+    }
+
+    private static void MostrarDiaConSwitch(int numero)
+    {
+        switch (numero)
+        {
+            case 1:
+                Console.WriteLine("Lunes");
+                break;
+            case 2:
+                Console.WriteLine("Martes");
+                break;
+            case 3:
+                Console.WriteLine("Miércoles");
+                break;
+            case 4:
+                Console.WriteLine("Jueves");
+                break;
+            case 5:
+                Console.WriteLine("Viernes");
+                break;
+            case 6:
+                Console.WriteLine("Sábado");
+                break;
+            case 7:
+                Console.WriteLine("Domingo");
+                break;
+        }
     }
 }
 
