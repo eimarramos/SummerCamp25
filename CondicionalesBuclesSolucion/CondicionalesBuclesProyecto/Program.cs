@@ -8,7 +8,11 @@
         {
             Console.WriteLine("Introduce un número del 1 al 7 (o 0 para salir):");
 
+            // Input del usuario.
+
             var userInput = Console.ReadLine();
+
+            // Si el input es igual a 0 salimos del bucle.
 
             if (userInput == "0")
             {
@@ -16,7 +20,11 @@
                 break;
             }
 
+            // Intentamos convertir el input a un número, en caso de no se posible numero se quedara a 0.
+
             int.TryParse(userInput, out int num);
+
+            // Comprobamos que el numero este dentro del rango de 1 a 7 y mostramos el día, en caso de estar fuera de rango mostramos un error.
 
             if (num >= 1 && num <= 7)
             {
