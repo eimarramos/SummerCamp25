@@ -20,7 +20,7 @@
                 break;
             }
 
-            // Intentamos convertir el input a un número, en caso de no se posible numero se quedara a 0.
+            // Intentamos convertir el input a un número, en caso de no se posible numero se quedará a 0.
 
             int.TryParse(userInput, out int num);
 
