@@ -1,4 +1,5 @@
 using ApiPaisesProyecto.BaseDatos;
+using ApiPaisesProyecto.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ContextoBaseDatos>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Inyección de dependencias para el servicio de saludo
+
+builder.Services.AddSingleton<ISaludo, EnglishSaludo>();
+
+// Inyección de dependencias para el generador de códigos
+
+// builder.Services.AddSingleton<ICodigoGenerador, CodigoGenerador>();
+
+// Servicio generador de códigos con fecha
+
+builder.Services.AddScoped<ICodigoGenerador, CodigoGeneradorConFecha>();
 
 var app = builder.Build();
 
