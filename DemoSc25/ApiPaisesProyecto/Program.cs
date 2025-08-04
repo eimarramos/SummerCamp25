@@ -1,5 +1,7 @@
 using ApiPaisesProyecto.BaseDatos;
+using ApiPaisesProyecto.Entities;
 using ApiPaisesProyecto.Services;
+using Bogus;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,49 @@ builder.Services.AddSingleton<ISaludo, EnglishSaludo>();
 builder.Services.AddScoped<ICodigoGenerador, CodigoGeneradorConFecha>();
 
 var app = builder.Build();
+
+// Seeding de datos de Apartamento, Edificio y Distrito, y migración automática solo en desarrollo
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ContextoBaseDatos>();
+    if (app.Environment.IsDevelopment())
+    {
+        db.Database.Migrate();
+    }
+    if (!db.Apartamentos.Any() && !db.Edificios.Any() && !db.Distritos.Any())
+    {
+        // 1. Crear 3 distritos
+        var distritos = new List<Distrito>
+        {
+            new Distrito { Nombre = "Distrito Norte" },
+            new Distrito { Nombre = "Distrito Centro" },
+            new Distrito { Nombre = "Distrito Sur" }
+        };
+        db.Distritos.AddRange(distritos);
+        db.SaveChanges();
+
+        // 2. Crear 5 edificios, repartidos entre los distritos
+        var edificioFaker = new Faker<Edificio>()
+            .RuleFor(e => e.Nombre, f => $"Edificio {f.UniqueIndex + 1}")
+            .RuleFor(e => e.Ciudad, f => f.Address.City())
+            .RuleFor(e => e.Direccion, f => f.Address.StreetAddress())
+            .RuleFor(e => e.NumeroDePisos, f => f.Random.Int(3, 15))
+            .RuleFor(e => e.Distrito, f => f.PickRandom(distritos));
+        var edificios = edificioFaker.Generate(5);
+        db.Edificios.AddRange(edificios);
+        db.SaveChanges();
+
+        // 3. Crear 250 apartamentos, asignando edificio aleatorio
+        var apartamentoFaker = new Faker<Apartamento>()
+            .RuleFor(a => a.Nombre, f => $"Apartamento {f.UniqueIndex + 1}")
+            .RuleFor(a => a.Ciudad, f => f.Address.City())
+            .RuleFor(a => a.Puerta, f => f.Random.AlphaNumeric(3).ToUpper())
+            .RuleFor(a => a.Edificio, f => f.PickRandom(edificios));
+        var apartamentos = apartamentoFaker.Generate(250);
+        db.Apartamentos.AddRange(apartamentos);
+        db.SaveChanges();
+    }
+}
 
 // B-Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -7,7 +7,7 @@
 
     public class CodigoGenerador : ICodigoGenerador
     {
-        private Random _random = new Random();
+        private readonly Random _random = new Random();
         public string GenerarCodigo(string prefijo)
         {
             return $"{prefijo.ToUpper()}-{_random.Next(1000, 9999)}";
@@ -16,7 +16,7 @@
 
     public class CodigoGeneradorConFecha : ICodigoGenerador
     {
-        private Random _random = new Random();
+        private readonly Random _random = new Random();
         public string GenerarCodigo(string prefijo)
         {
             string fecha = DateTime.Now.ToString("yyyyMMdd");
