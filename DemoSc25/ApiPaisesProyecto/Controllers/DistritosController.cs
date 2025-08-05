@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ApiPaisesProyecto.BaseDatos;
+﻿using ApiPaisesProyecto.BaseDatos;
 using ApiPaisesProyecto.Entities;
 using ApiPaisesProyecto.Models;
+using ApiPaisesProyecto.Utilidades;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiPaisesProyecto.Controllers
 {
@@ -27,7 +23,14 @@ namespace ApiPaisesProyecto.Controllers
         public async Task<ActionResult<IEnumerable<DistritoDto>>> GetDistritos()
         {
             var distritos = await _context.Distritos.ToListAsync();
-            var distritosDto = distritos.Select(d => new DistritoDto { Id = d.Id, Nombre = d.Nombre }).ToList();
+            var distritosDto = distritos.Select(d => new DistritoDto
+            {
+                Id = d.Id,
+                Nombre = d.Nombre.ConvertirMayusculas(),
+                DireccionJuntaDistrital = d.DireccionJuntaDistrital.ConvertirMayusculas(),
+                Responsable = d.Responsable.ConvertirMayusculas(),
+                Antiguedad = d.FechaFundacion.CalcularAntiguedad()
+            }).ToList();
 
             return distritosDto;
         }
@@ -109,4 +112,6 @@ namespace ApiPaisesProyecto.Controllers
             return _context.Distritos.Any(e => e.Id == id);
         }
     }
+
+
 }
