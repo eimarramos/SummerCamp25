@@ -1,7 +1,10 @@
-﻿using ApiPaisesProyecto.Models;
+﻿using ApiPaisesProyecto.BaseDatos;
+using ApiPaisesProyecto.Entities;
+using ApiPaisesProyecto.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiPaisesProyecto.Controllers
 {
@@ -13,19 +16,34 @@ namespace ApiPaisesProyecto.Controllers
     [ApiController]
     public class ApartamentosController : ControllerBase
     {
+        ContextoBaseDatos _context;
+        public ApartamentosController(ContextoBaseDatos contextoBaseDatos)
+        {
+            // Constructor del controlador, puedes inicializar servicios o dependencias aquí si es necesario.
+            _context = contextoBaseDatos;
+        }
+
         // GET: api/apartamentos
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             // Devuelve una lista de apartamentos simulada
-            var lista = new List<ApartamentoDto>
-            {
-                new ApartamentoDto { Id = 1, Nombre = "Apartamento 1", Ciudad = "Ciudad A" },
-                new ApartamentoDto { Id = 2, Nombre = "Apartamento 2", Ciudad = "Ciudad B" },
-                new ApartamentoDto { Id = 3, Nombre = "Apartamento 3", Ciudad = "Ciudad C" }
-            };
+            var lista = await _context.Apartamentos
+                                 //.Where(apartamento => apartamento.Ciudad.Contains("a") && apartamento.Puerta.Contains("1"))
+                                 .Where(apartamento => apartamento.Ciudad == "Zanebury")
+                                 .OrderBy(apartamento => apartamento.Nombre)
+                                 .ToListAsync();
 
             return Ok(lista);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Apartamento>> PostApartamento(Apartamento apartamento)
+        {
+            _context.Apartamentos.Add(apartamento);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetApartamento", new { id = apartamento.Id }, apartamento);
         }
     }
 }
