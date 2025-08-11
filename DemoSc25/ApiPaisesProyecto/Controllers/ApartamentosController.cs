@@ -1,42 +1,85 @@
 ﻿using ApiPaisesProyecto.BaseDatos;
 using ApiPaisesProyecto.Entities;
-using ApiPaisesProyecto.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiPaisesProyecto.Controllers
 {
-    // Este es un controlador de API vacío, preparado para manejar solicitudes HTTP en rutas como /api/apartamentos. Para que sea funcional, debes agregar métodos (acciones) como Get, Post, Put o Delete que gestionen los apartamentos.
-
-    // Nomebre del controlador === Apartamentos
-
-    [Route("api/apartamentos")] // Ruta base para el controlador : api/apartamentos
+    [Route("api/[controller]")]
     [ApiController]
-    public class ApartamentosController : ControllerBase
+    public class ApartamentoContextoController : ControllerBase
     {
-        ContextoBaseDatos _context;
-        public ApartamentosController(ContextoBaseDatos contextoBaseDatos)
+        private readonly ContextoBaseDatos _context;
+
+        public ApartamentoContextoController(ContextoBaseDatos context)
         {
-            // Constructor del controlador, puedes inicializar servicios o dependencias aquí si es necesario.
-            _context = contextoBaseDatos;
+            _context = context;
         }
 
-        // GET: api/apartamentos
+        // GET: api/Apartamentos
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<IEnumerable<Apartamento>>> GetApartamentos()
         {
-            // Devuelve una lista de apartamentos simulada
             var lista = await _context.Apartamentos
-                                 //.Where(apartamento => apartamento.Ciudad.Contains("a") && apartamento.Puerta.Contains("1"))
-                                 .Where(apartamento => apartamento.Ciudad == "Zanebury")
-                                 .OrderBy(apartamento => apartamento.Nombre)
-                                 .ToListAsync();
+                                //.Where(apartamento => apartamento.Ciudad.Contains("a") && apartamento.Puerta.Contains("1"))
+                                //.Where(apartamento => apartamento.Ciudad == "Zanebury")
+                                .OrderBy(apartamento => apartamento.Nombre)
+                                .ToListAsync();
+
+
 
             return Ok(lista);
+
+            // return await _context.Apartamentos .ToListAsync();
         }
 
+        // GET: api/Apartamentos/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Apartamento>> GetApartamento(int id)
+        {
+            var apartamento = await _context.Apartamentos.FindAsync(id);
+
+            if (apartamento == null)
+            {
+                return NotFound();
+            }
+
+            return apartamento;
+        }
+
+        // PUT: api/Apartamentos/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutApartamento(int id, Apartamento apartamento)
+        {
+            if (id != apartamento.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(apartamento).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ApartamentoExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Apartamentos
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Apartamento>> PostApartamento(Apartamento apartamento)
         {
@@ -44,6 +87,27 @@ namespace ApiPaisesProyecto.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetApartamento", new { id = apartamento.Id }, apartamento);
+        }
+
+        // DELETE: api/Apartamentos/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteApartamento(int id)
+        {
+            var apartamento = await _context.Apartamentos.FindAsync(id);
+            if (apartamento == null)
+            {
+                return NotFound();
+            }
+
+            _context.Apartamentos.Remove(apartamento);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool ApartamentoExists(int id)
+        {
+            return _context.Apartamentos.Any(e => e.Id == id);
         }
     }
 }

@@ -5,6 +5,7 @@ using ApiPaisesProyecto.Utilidades;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace ApiPaisesProyecto.Controllers
 {
     [Route("api/[controller]")]
@@ -20,19 +21,31 @@ namespace ApiPaisesProyecto.Controllers
 
         // GET: api/Distritos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DistritoDto>>> GetDistritos()
+        public async Task<ActionResult<List<DistritoDto>>> GetDistritos()
         {
-            var distritos = await _context.Distritos.ToListAsync();
-            var distritosDto = distritos.Select(d => new DistritoDto
-            {
-                Id = d.Id,
-                Nombre = d.Nombre.ConvertirMayusculas(),
-                DireccionJuntaDistrital = d.DireccionJuntaDistrital.ConvertirMayusculas(),
-                Responsable = d.Responsable.ConvertirMayusculas(),
-                Antiguedad = d.FechaFundacion.CalcularAntiguedad()
-            }).ToList();
+            // Implementar devolver una lista de distritos en formato dto
+            // Aquí se podría usar un DTO si se desea limitar los campos devueltos
 
-            return distritosDto;
+            List<DistritoDto> listaDistritos = new List<DistritoDto>();
+
+            // 1-Traer todos los distritos de la base de datos
+            var distritos = await _context.Distritos.ToListAsync();
+
+            // 2-Devolver la lista de distritos en formato dto
+            foreach (var distrito in distritos)
+            {
+
+                listaDistritos.Add(new DistritoDto
+                {
+                    Id = distrito.Id,
+                    Nombre = distrito.Nombre.ConvertirMayusculas(),
+                    DireccionJuntaDistrital = distrito.DireccionJuntaDistrital.ConvertirMayusculas(),
+                    Responsable = distrito.Responsable.ConvertirMayusculas(),
+                    Antiguedad = distrito.FechaFundacion.CalcularAntiguedad()
+                });
+            }
+
+            return listaDistritos;
         }
 
         // GET: api/Distritos/5
@@ -112,6 +125,4 @@ namespace ApiPaisesProyecto.Controllers
             return _context.Distritos.Any(e => e.Id == id);
         }
     }
-
-
 }

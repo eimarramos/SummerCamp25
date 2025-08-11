@@ -3,8 +3,22 @@ using ApiPaisesProyecto.Entities;
 using ApiPaisesProyecto.Services;
 using Bogus;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configurar Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("logs\\log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+
+// A-Agregar servicios a la aplicacion.
+
+// Agregar servicio de Serilog
+builder.Logging.AddSerilog();
 
 // A-Agregar servicios a la aplicacion.
 
