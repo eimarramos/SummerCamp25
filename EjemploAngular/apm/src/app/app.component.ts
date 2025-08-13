@@ -4,13 +4,7 @@ import { Component } from '@angular/core';
   selector: 'pm-root',
   template: `
     <div>
-      <h1>
-        {{ title }}
-      </h1>
-      <div>Mi Primer Componente</div>
-      <pm-welcome />
-      <pm-counter-demo />
-      <pm-card-demo />
+      <pm-peliculas />
     </div>
   `,
 })
