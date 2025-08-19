@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'pm-counter-demo',
   templateUrl: './counter-demo.component.html',
   styleUrl: './counter-demo.component.css',
 })
-export class CounterDemoComponent {
+export class CounterDemoComponent implements OnInit {
+  @Input() valorInicial: number = 0;
   contador: number = 0;
+
+  ngOnInit() {
+    this.contador = this.valorInicial;
+  }
 
   incrementar() {
     this.contador++;
@@ -17,6 +22,6 @@ export class CounterDemoComponent {
   }
 
   resetear() {
-    this.contador = 0;
+    this.contador = this.valorInicial;
   }
 }

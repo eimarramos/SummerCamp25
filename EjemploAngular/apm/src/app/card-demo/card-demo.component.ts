@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'pm-card-demo',
@@ -6,8 +6,16 @@ import { Component } from '@angular/core';
   styleUrl: './card-demo.component.css',
 })
 export class CardDemoComponent {
-  titulo: string = 'Título de la tarjeta';
-  contenido: string = 'Contenido de la tarjeta';
-  imagenUrl: string = 'https://picsum.photos/200/300';
-  fecha: string = new Date().toLocaleDateString();
+  @Input() id: number = 0;
+  @Input() titulo: string = 'Título de la tarjeta';
+  @Input() contenido: string = 'Contenido de la tarjeta';
+  @Input() imagenUrl: string = 'https://picsum.photos/200/300';
+  @Input() fecha: string = new Date().toLocaleDateString();
+  @Input() autor: string = 'Autor';
+
+  @Output() cardClick = new EventEmitter<string>();
+
+  onCardClick(): void {
+    this.cardClick.emit(this.titulo);
+  }
 }

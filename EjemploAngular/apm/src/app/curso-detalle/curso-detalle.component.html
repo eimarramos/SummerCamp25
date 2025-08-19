@@ -1,0 +1,6 @@
+<ng-container
+  *ngIf="this.cursosService.getCursoById(this.cursoId) | async as curso"
+>
+  <h2>{{ curso.titulo }}</h2>
+  <p>{{ curso.descripcion }}</p>
+</ng-container>

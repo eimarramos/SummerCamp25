@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "titulo": "Angular Fundamentals",
+    "descripcion": "Aprende los fundamentos de Angular desde cero, incluyendo componentes, servicios y routing.",
+    "urlImagen": "https://picsum.photos/400/200?random=1",
+    "fecha": "2024-01-15",
+    "autor": "María González"
+  },
+  {
+    "id": 2,
+    "titulo": "TypeScript Avanzado",
+    "descripcion": "Domina TypeScript con tipos avanzados, decoradores y mejores prácticas para desarrollo.",
+    "urlImagen": "https://picsum.photos/400/200?random=2",
+    "fecha": "2024-02-10",
+    "autor": "Carlos Ruiz"
+  },
+  {
+    "id": 3,
+    "titulo": "RxJS y Observables",
+    "descripcion": "Manejo de programación reactiva con RxJS, operadores y patrones de diseño.",
+    "urlImagen": "https://picsum.photos/400/200?random=3",
+    "fecha": "2024-03-05",
+    "autor": "Ana López"
+  },
+  {
+    "id": 4,
+    "titulo": "Testing en Angular",
+    "descripcion": "Aprende a crear tests unitarios y de integración para aplicaciones Angular.",
+    "urlImagen": "https://picsum.photos/400/200?random=4",
+    "fecha": "2024-04-20",
+    "autor": "Luis Martínez"
+  },
+  {
+    "id": 5,
+    "titulo": "NgRx State Management",
+    "descripcion": "Gestión de estado en aplicaciones grandes con NgRx Store, Effects y Entity.",
+    "urlImagen": "https://picsum.photos/400/200?random=5",
+    "fecha": "2024-05-12",
+    "autor": "Sofia Hernández"
+  },
+  {
+    "id": 6,
+    "titulo": "Angular Material Design",
+    "descripcion": "Crea interfaces modernas y responsivas usando Angular Material Components.",
+    "urlImagen": "https://picsum.photos/400/200?random=6",
+    "fecha": "2024-06-08",
+    "autor": "Roberto Silva"
+  }
+]
