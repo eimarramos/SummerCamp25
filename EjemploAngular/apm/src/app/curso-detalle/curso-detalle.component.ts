@@ -1,6 +1,7 @@
-import { Component, inject, Input, input, OnInit } from '@angular/core';
-import { CursosService } from '../cursos/cursos.service';
+import { Component, inject, OnInit } from '@angular/core';
+import { CursosService, ICurso } from '../cursos/cursos.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pm-curso-detalle',
@@ -10,20 +11,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class CursoDetalleComponent implements OnInit {
   cursosService = inject(CursosService);
   route = inject(ActivatedRoute);
-  cursoId: number = 1;
+  router = inject(Router);
 
-  curso: any;
+  curso?: Observable<ICurso | undefined>;
 
   ngOnInit() {
-    this.cursoId = this.route.snapshot.params['id'];
+    const cursoIdParam = this.route.snapshot.params['id'];
 
-    this.cursosService.getCursoById(this.cursoId).subscribe({
-      next: (curso) => {
-        this.curso = curso;
-      },
-      error: (err) => {
-        // Manejar el error
-      },
-    });
+    const cursoId = Number(cursoIdParam);
+    this.curso = this.cursosService.getCursoById(cursoId);
   }
 }

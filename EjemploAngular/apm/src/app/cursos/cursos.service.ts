@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 export interface ICurso {
   id: number;
@@ -27,9 +27,10 @@ export class CursosService {
     );
   }
 
-  getCursoById(id: number): Observable<ICurso> {
-    return this.http.get<ICurso>(`${this.cursosUrl}/${id}`).pipe(
-      tap((data) => console.log('Curso:', JSON.stringify(data))),
+  getCursoById(id: number): Observable<ICurso | undefined> {
+    return this.getCursos().pipe(
+      map((cursos: ICurso[]) => cursos.find(curso => curso.id === id)),
+      tap((data) => console.log('Curso encontrado:', JSON.stringify(data))),
       catchError(this.handleError)
     );
   }
